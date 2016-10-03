@@ -1,0 +1,51 @@
+body{
+	padding:0;
+	margin:0;
+	font-family: 微软雅黑;
+	font-size: 14px;
+}
+.bg{
+    background: linear-gradient(30deg,#f5b5b5 0%,#af76e2 100%);
+    background-repeat: no-repeat;
+    position: fixed;
+    z-index: -1;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+.clearfix:after{
+	content: '';
+	display: table;
+	clear: both;
+	height: 0;
+}
+.container{
+	padding: 10px;
+}
+.input{
+	width: 538px;
+	margin: auto;
+}
+.input input{
+	float: left;
+}
+.input input[type=url]{
+	width: 450px;
+	padding: 5px 10px;
+	font-size: 16px;
+	border: 2px solid #cecece;
+	outline-color: #fff;
+}
+.input input[type=submit]{
+	padding: 7px 5px;
+	width: 50px;
+	font-size: 16px;
+	border: 0;
+	outline:none;
+	color: #fff;
+	background-color: #3da1ff;
+}
+.input input[type=submit]:hover{
+	background-color: #2488e6;
+}

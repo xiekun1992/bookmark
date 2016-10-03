@@ -5,6 +5,12 @@
 # Home page
 GET     /                                       Application.index
 
+POST	/add_bookmark							Bookmarks.add
+GET		/get_bookmark							Bookmarks.get
+
+
+GET		/access_url								Bookmarks.access
+
 # Ignore favicon requests
 GET     /favicon.ico                            404
 
@@ -12,4 +18,4 @@ GET     /favicon.ico                            404
 GET     /public/                                staticDir:public
 
 # Catch all
-*       /{controller}/{action}                  {controller}.{action}
+#*       /{controller}/{action}                  {controller}.{action}

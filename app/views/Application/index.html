@@ -1,4 +1,60 @@
 #{extends 'main.html' /}
-#{set title:'Home' /}
-
-#{welcome /}
+#{set title:'bookmark' /}
+<div class="bg"></div>
+<div class="container">
+	<div class="input clearfix">
+		<form onsubmit="addBookmark(event)">
+			<input type="url" placeholder="paste the url" required id="url">
+			<input type="submit" value="add">
+		</form>
+	</div>
+	<div class="list">
+		<ul id="bookmarkList">
+		</ul>
+	</div>
+</div>
+#{set 'moreScripts'}
+<script>
+	function addBookmark(event){
+		event.preventDefault();
+		var url=$("#url").val();
+		$.ajax({
+			type:'POST',
+			url:'/add_bookmark',
+			data:{url:url},
+			datatype:'json'
+		}).then(function(data){
+			if(data.errorCode==20){
+				alert('bookmark added');
+				$("#bookmarkList").append('<li><a href="'+url+'" target="_blank">'+url+'</a></li>');
+			}else{
+				alert('fail to add bookmark');
+			}
+		},function(){
+			alert('error has occured');
+		});
+	}
+	function listBookmark(){
+		$.ajax({
+			type:'GET',
+			url:'get_bookmark',
+			data:{keywords:''},
+			datatype:'json'
+		}).then(function(data){
+			if(data.errorCode==20){
+				var html="",bms=data.data;
+				for(var i=0,len=bms.length;i<len;i++){
+					html+="<li><a href='"+bms[i].url+"' target='_blank'>"+bms[i].url+"</a></li>";
+				}
+				console.log(html);
+				$("#bookmarkList").append(html);
+			}else{
+				alert('fail to get bookmark');
+			}
+		},function(){
+			alert('error has occured');
+		});
+	}
+	listBookmark();
+</script>
+#{/set}
