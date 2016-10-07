@@ -1,18 +1,16 @@
 body{
 	padding:0;
 	margin:0;
-	font-family: 微软雅黑;
 	font-size: 14px;
 }
-.bg{
-    background: linear-gradient(30deg,#f5b5b5 0%,#af76e2 100%);
-    background-repeat: no-repeat;
-    position: fixed;
-    z-index: -1;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
+*{
+	font-family: 微软雅黑;
+	box-sizing:border-box;
+}
+ul,li{
+	list-style: none;
+	padding: 0;
+	margin: 0;
 }
 .clearfix:after{
 	content: '';
@@ -23,29 +21,156 @@ body{
 .container{
 	padding: 10px;
 }
+.wall{
+	position: relative;
+	height: 200px;
+	overflow: hidden;
+}
+.wall nav,
+.wall .input{
+	height: 200px;
+}
+.wall>.scroll{
+	position: absolute;
+	top: 0;
+	left: 0;
+	transition:top .2s;
+}
+.wall>.scroll.open{
+	top: -200px;
+}
+.wall>.scroll.close{
+	top: 0;
+}
 .input{
-	width: 538px;
-	margin: auto;
+	/*width: 538px;*/
+	/*margin: auto;*/
+	width: 100%;
+	display: block;
 }
 .input input{
-	float: left;
+	/*float: left;*/
+	margin-top: 10px;
 }
-.input input[type=url]{
-	width: 450px;
+.input input[type=url],
+.input input[type=text],
+.input select{
+	width: 100%;
 	padding: 5px 10px;
 	font-size: 16px;
-	border: 2px solid #cecece;
-	outline-color: #fff;
+	border: 1px solid #cecece;
+	border-radius: 2px;
+	/*outline-color: #fff;*/
 }
-.input input[type=submit]{
+.input select{
+	margin-right: 50px;
+	border-radius: 2px 0 0 2px;
+}
+/*.input input[type=submit]*/
+.btn{
+	width: 100%;
 	padding: 7px 5px;
-	width: 50px;
 	font-size: 16px;
-	border: 0;
-	outline:none;
+	border:0;
+	border-radius: 2px;
 	color: #fff;
 	background-color: #3da1ff;
 }
-.input input[type=submit]:hover{
+.btn:hover{
+	/*border-bottom: 2px solid #2488e6;*/
 	background-color: #2488e6;
+}
+.btn[disabled=disabled]{
+	background-color: #cecece !important;
+	cursor: not-allowed;
+}
+.select-wrapper{
+	margin-top: 10px;
+	position: relative;
+}
+.select-wrapper>div{
+	margin-right: 30px;
+}
+.select-wrapper>button{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    border: 0;
+    width: 30px;
+    height: 100%;
+    border-radius: 0 2px 2px 0;
+    background-color: #3da1ff;
+    color: #fff;
+}
+.bookmark .icon{
+	width:20px;
+	height:20px;
+}
+table{
+    table-layout: fixed;
+    width: 100%;
+    text-align: center;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+table tr{
+	border:1px solid #cecece;
+}
+table td,
+table th{
+	padding:8px 5px;
+}
+table td span,
+table td a{
+	display: block;
+	text-overflow:ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	width: 100%;
+}
+.content{
+	margin-left: 200px;
+}
+aside{
+	width: 200px;
+	position: fixed;
+	left: 0;
+	top: 0;
+	background: #1f82b5;
+	height: 100%;
+}
+aside:before{
+	content: '';
+	width: inherit;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	background: inherit;
+	z-index: -1;
+}
+nav{
+	padding: 20px 0 20px 0;
+}
+.user-img{
+	margin: auto;
+	display: block;
+	height: 100px;
+	width: 100px;
+	margin-bottom: 20px;
+	margin-top: 10px;
+	border-radius: 50%;
+}
+nav a{
+	display: block;
+	padding: 5px 10px;
+	text-decoration: none;
+	color: #fff;
+	font-size: 16px;
+	text-align: center;
+}
+nav a.active,
+nav a:hover{
+	background-color: #fff;
+	color: #1f82b5;
 }

@@ -4,12 +4,17 @@
 
 # Home page
 GET     /                                       Application.index
+#Bookmark
+POST	/bookmark							Bookmarks.add
+GET		/bookmarks							Bookmarks.get
+POST 	/bookmark/{bookmarkId}/count		Bookmarks.count
 
-POST	/add_bookmark							Bookmarks.add
-GET		/get_bookmark							Bookmarks.get
+#URLs
+GET		/url/{url}/info						URLs.access
 
-
-GET		/access_url								Bookmarks.access
+#Category
+POST	/category							Categories.add
+GET		/category							Categories.get
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

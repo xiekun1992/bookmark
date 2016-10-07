@@ -1,60 +1,66 @@
 #{extends 'main.html' /}
 #{set title:'bookmark' /}
-<div class="bg"></div>
-<div class="container">
-	<div class="input clearfix">
-		<form onsubmit="addBookmark(event)">
-			<input type="url" placeholder="paste the url" required id="url">
-			<input type="submit" value="add">
-		</form>
+
+<aside>
+	<img src="https://github.com/favicon.ico" alt="" class="user-img">
+	<div>
+		<button ng-click="showForm()" class="btn"><div ng-bind="scrollText"></div></button>
 	</div>
-	<div class="list">
-		<ul id="bookmarkList">
-		</ul>
+	<div class="wall">
+		<div class="scroll" ng-class="{open:wallScroll,close:!wallScroll}">
+			<nav>
+				<ul>
+					<li><a href="/" class="active">首页</a></li>
+					<li><a href="/">分类</a></li>
+					<li><a href="/">分析</a></li>
+				</ul>	
+			</nav>
+			<div class="input container">
+				<form ng-submit="form.submit()" name="urlForm">
+					<input type="text" placeholder="描述" ng-model="form.description" ng-required>
+					<input type="url" placeholder="网址" ng-model="form.url" ng-required>
+					<div class="select-wrapper">
+						<div>
+							<select ng-model="form.category" ng-required>
+								<option value="" selected="true" disabled="true">分类</option>	
+								<option ng-repeat="category in categories track by $index" value="{{category.id}}">
+									{{category.name}}
+								</option>
+							</select>
+						</div>
+						<button type="button">+</button>
+					</div>
+					<input type="submit" class="btn" value="添加" disabled="true" ng-disabled="!form.url||!form.description||!form.category">
+				</form>
+			</div>		
+			
+		</div>
+		
 	</div>
-</div>
-#{set 'moreScripts'}
-<script>
-	function addBookmark(event){
-		event.preventDefault();
-		var url=$("#url").val();
-		$.ajax({
-			type:'POST',
-			url:'/add_bookmark',
-			data:{url:url},
-			datatype:'json'
-		}).then(function(data){
-			if(data.errorCode==20){
-				alert('bookmark added');
-				$("#bookmarkList").append('<li><a href="'+url+'" target="_blank">'+url+'</a></li>');
-			}else{
-				alert('fail to add bookmark');
-			}
-		},function(){
-			alert('error has occured');
-		});
-	}
-	function listBookmark(){
-		$.ajax({
-			type:'GET',
-			url:'get_bookmark',
-			data:{keywords:''},
-			datatype:'json'
-		}).then(function(data){
-			if(data.errorCode==20){
-				var html="",bms=data.data;
-				for(var i=0,len=bms.length;i<len;i++){
-					html+="<li><a href='"+bms[i].url+"' target='_blank'>"+bms[i].url+"</a></li>";
-				}
-				console.log(html);
-				$("#bookmarkList").append(html);
-			}else{
-				alert('fail to get bookmark');
-			}
-		},function(){
-			alert('error has occured');
-		});
-	}
-	listBookmark();
-</script>
-#{/set}
+</aside>
+<section class="content">
+	<main>
+		<table>
+			<thead>
+				<tr>
+					<th style="width: 8%;">图标</th>
+					<th style="width: 25%;">标题</th>
+					<th style="width: 30%;">链接</th>
+					<th style="width: 25%;">描述</th>
+					<th style="width: 12%;">分类</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr data-ng-repeat="url in urls track by $index" class="bookmark">
+					<td><img data-ng-src="{{url.icon}}" class="icon"></td>
+					<td><span data-ng-bind="url.title"></span></td>
+					<td><a href="{{url.url}}" data-ng-click="addCount(url.id)" target="_blank" data-ng-bind="url.url"></a></td>
+					<td><span data-ng-bind="url.description"></span></td>
+					<td><span data-ng-bind="url.categoryName"></span></td>
+					<!-- <td><span data-ng-bind="url.available | avail"></span></td> -->
+				</tr>
+			</tbody>
+		</table>
+	</main>
+
+</section>
