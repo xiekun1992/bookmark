@@ -2,8 +2,10 @@
 #{set title:'bookmark' /}
 
 <aside>
-	<img src="https://github.com/favicon.ico" alt="" class="user-img">
+	<img src="/public/images/psb.jpg" alt="" class="user-img">
 	<div>
+		<!-- <button ng-click="showForm()" class="btn">注册</button> -->
+		<button ng-click="showForm()" class="btn">登录</button>
 		<button ng-click="showForm()" class="btn"><div ng-bind="scrollText"></div></button>
 	</div>
 	<div class="wall">
@@ -19,16 +21,29 @@
 				<form ng-submit="form.submit()" name="urlForm">
 					<input type="text" placeholder="描述" ng-model="form.description" ng-required>
 					<input type="url" placeholder="网址" ng-model="form.url" ng-required>
-					<div class="select-wrapper">
-						<div>
-							<select ng-model="form.category" ng-required>
-								<option value="" selected="true" disabled="true">分类</option>	
-								<option ng-repeat="category in categories track by $index" value="{{category.id}}">
-									{{category.name}}
-								</option>
-							</select>
+					<div class="r-container">
+						<div class="r-card" ng-class="{'flip-pos':flip,'flip-nag':!flip}">
+							<div class="select-wrapper" ng-style="{'z-index':flip?0:1}">
+								<div>
+									<select ng-model="form.category" ng-required>
+										<option value="" selected="true" disabled="true">分类</option>	
+										<option ng-repeat="category in categories track by $index" value="{{category.id}}">
+											{{category.name}}
+										</option>
+									</select>
+								</div>
+								<button type="button" ng-click="flip=true">+</button>
+							</div>
+							<div class="selector-wrapper">
+								<div class="selector">
+									<input type="text" placeholder="请输入分类">
+									<ul>
+										<li ng-repeat="category in categories">{{category.name}}</li>
+									</ul>
+								</div>
+								<button type="button" ng-click="flip=false">←</button>
+							</div>					
 						</div>
-						<button type="button">+</button>
 					</div>
 					<input type="submit" class="btn" value="添加" disabled="true" ng-disabled="!form.url||!form.description||!form.category">
 				</form>
@@ -52,7 +67,7 @@
 			</thead>
 			<tbody>
 				<tr data-ng-repeat="url in urls track by $index" class="bookmark">
-					<td><img data-ng-src="{{url.icon}}" class="icon"></td>
+					<td><img data-ng-src="{{url.icon||'about:blank'}}" class="icon"></td>
 					<td><span data-ng-bind="url.title"></span></td>
 					<td><a href="{{url.url}}" data-ng-click="addCount(url.id)" target="_blank" data-ng-bind="url.url"></a></td>
 					<td><span data-ng-bind="url.description"></span></td>

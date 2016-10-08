@@ -9,7 +9,8 @@ angular.module('bookmark',[])
 		}else{
 			$scope.scrollText="添加书签";
 		}
-	}
+	};
+	$scope.flip=false;
 	$scope.form={
 		url:"",
 		description:"",
