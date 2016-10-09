@@ -4,7 +4,6 @@
 <aside>
 	<img src="/public/images/psb.jpg" alt="" class="user-img">
 	<div>
-		<!-- <button ng-click="showForm()" class="btn">注册</button> -->
 		<button ng-click="showForm()" class="btn">登录</button>
 		<button ng-click="showForm()" class="btn"><div ng-bind="scrollText"></div></button>
 	</div>
@@ -32,16 +31,19 @@
 										</option>
 									</select>
 								</div>
-								<button type="button" ng-click="flip=true">+</button>
+								<button type="button" ng-click="flipToCategory()">→</button>
 							</div>
 							<div class="selector-wrapper">
 								<div class="selector">
-									<input type="text" placeholder="请输入分类">
-									<ul>
-										<li ng-repeat="category in categories">{{category.name}}</li>
+									<input type="text" id="newCategory" ng-model="newCategory.name" placeholder="请输入分类" ng-focus="showCategories()" ng-blur="hideCategories()">
+									<ul tabindex="-1" ng-focus="showCategories()" ng-blur="hideCategories()" ng-style="{'display':presentCategories?'block':'none'}">
+										<li ng-repeat="category in categories">
+											<div class="c-name" ng-click="selectCategory(category)">{{category.name}}</div>
+											<button type="button" class="c-remove" ng-click="removeCategory(category.id)">x</button>
+										</li>
 									</ul>
 								</div>
-								<button type="button" ng-click="flip=false">←</button>
+								<button type="button" ng-click="addOrEditCategory()">←</button>
 							</div>					
 						</div>
 					</div>
@@ -50,6 +52,7 @@
 			</div>		
 			
 		</div>
+		<!-- <button ng-click="showForm()" class="btn">注册</button> -->
 		
 	</div>
 </aside>
@@ -58,8 +61,8 @@
 		<table>
 			<thead>
 				<tr>
-					<th style="width: 8%;">图标</th>
-					<th style="width: 25%;">标题</th>
+					<!-- <th style="width: 8%;">图标</th> -->
+					<th style="width: 33%;">标题</th>
 					<th style="width: 30%;">链接</th>
 					<th style="width: 25%;">描述</th>
 					<th style="width: 12%;">分类</th>
@@ -67,8 +70,8 @@
 			</thead>
 			<tbody>
 				<tr data-ng-repeat="url in urls track by $index" class="bookmark">
-					<td><img data-ng-src="{{url.icon||'about:blank'}}" class="icon"></td>
-					<td><span data-ng-bind="url.title"></span></td>
+					<!-- <td></td> -->
+					<td><img data-ng-src="{{url.icon||'about:blank'}}" class="icon"><span class="title" data-ng-bind="url.title"></span></td>
 					<td><a href="{{url.url}}" data-ng-click="addCount(url.id)" target="_blank" data-ng-bind="url.url"></a></td>
 					<td><span data-ng-bind="url.description"></span></td>
 					<td><span data-ng-bind="url.categoryName"></span></td>

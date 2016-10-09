@@ -97,7 +97,7 @@ ul,li{
 	margin-right: 30px;
 }
 .select-wrapper>button,
-.selector-wrapper>button{
+.selector-wrapper button{
     position: absolute;
     right: 0px;
     top: 0px;
@@ -109,9 +109,22 @@ ul,li{
     color: #fff;
     outline: none;
 }
+.selector-wrapper .c-name{
+    padding: 7px 10px;
+    margin-right: 31px;
+}
+.selector-wrapper .c-remove{
+	border-radius: 0;
+}
 .bookmark .icon{
 	width:20px;
 	height:20px;
+    position: absolute;
+    left: 5px;
+    top: 8px;
+}
+.bookmark span.title{
+	margin-left: 25px;
 }
 table{
     table-layout: fixed;
@@ -126,6 +139,7 @@ table tr{
 table td,
 table th{
 	padding:8px 5px;
+	position: relative;
 }
 table td span,
 table td a{
@@ -133,7 +147,7 @@ table td a{
 	text-overflow:ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
-	width: 100%;
+	/*width: 100%;*/
 }
 .content{
 	margin-left: 200px;
@@ -208,12 +222,22 @@ nav a:hover{
 .r-card .select-wrapper select,
 .r-card .selector-wrapper input{
 	margin: 0;
+    border-radius: 2px 0 0 2px;
 }
 .selector input{
 	width: 100%;
 }
 .selector ul{
 	display: none;
+	position: absolute;
+    top: 33px;
+    left: 0;
+    background: #fff;
+    width: 100%;
+}
+.selector ul li{
+    position: relative;
+    /*border-bottom: 1px solid #cecece;*/
 }
 /*animation*/
 .flip-pos{

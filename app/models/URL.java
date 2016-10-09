@@ -25,7 +25,7 @@ public class URL {
 		this.title=title;
 	}
 	/**
-     * 获取icon和title
+     * 获取icon和title，同时有/favicon.ico和link[rel=icon]的时候，以后者为准
      * @param bUrl
      * @return
      */

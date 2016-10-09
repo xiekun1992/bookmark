@@ -1,5 +1,5 @@
 angular.module('bookmark',[])
-.controller('bookmarkController',['$scope','API',function($scope,API){
+.controller('bookmarkController',['$scope','API','$timeout',function($scope,API,$timeout){
 	$scope.wallScroll=false;
 	$scope.scrollText="添加书签";
 	$scope.showForm=function(){
@@ -11,6 +11,59 @@ angular.module('bookmark',[])
 		}
 	};
 	$scope.flip=false;
+	// 分类下拉编辑控件
+	$scope.presentCategories=false;
+	$scope.newCategory={name:''};
+	var timer;
+	$scope.showCategories=function(){
+		$timeout.cancel(timer);
+		$scope.presentCategories=true;
+	};
+	$scope.hideCategories=function(){
+		timer=$timeout(function(){
+			$scope.presentCategories=false;
+		},200);
+	};
+	$scope.selectCategory=function(category){
+		var tmp={};
+		angular.copy(category,tmp);
+		$scope.newCategory=tmp;
+		angular.element("#newCategory").focus();
+	};
+	$scope.removeCategory=function(cId){
+		// $http
+		$scope.showCategories();
+		angular.forEach($scope.categories,function(o,i){
+			if(o.id==cId){
+				$scope.categories.splice(i,1);
+			}
+		});
+		// $scope.showCategories();
+	};
+	$scope.flipToCategory=function(){
+		$scope.flip=true;
+		$scope.newCategory={name:''};
+	};
+	$scope.addOrEditCategory=function(){
+		// $http
+		if($scope.newCategory.name){
+			if($scope.newCategory.id){//编辑分类
+				angular.forEach($scope.categories,function(o,i){
+					if(o.id===$scope.newCategory.id && o.name!==$scope.newCategory.name){
+						o.name=$scope.newCategory.name;
+					}
+				});
+			}else{
+				$scope.categories.push($scope.newCategory);
+			}
+			angular.element("#newCategory").focus();
+		}else{
+			$scope.flip=false;
+		}
+		$scope.newCategory={name:''};
+
+	};
+
 	$scope.form={
 		url:"",
 		description:"",
