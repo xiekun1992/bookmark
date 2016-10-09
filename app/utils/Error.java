@@ -1,4 +1,4 @@
-package models;
+package utils;
 
 public class Error {
 	public static Integer S_20=20;
@@ -15,4 +15,6 @@ public class Error {
 	public static String F_41_MSG="重复添加";
 	public static Integer F_42=42;
 	public static String F_42_MSG="保存失败";
+	public static Integer F_43=43;
+	public static String F_43_MSG="删除失败";
 }

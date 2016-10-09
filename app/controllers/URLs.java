@@ -1,14 +1,14 @@
 package controllers;
 
 import models.Bookmark;
-import models.Error;
-import models.Result;
 import models.URL;
 
 import com.google.gson.JsonObject;
 
 import play.data.validation.Required;
 import play.mvc.*;
+import utils.Error;
+import utils.Result;
 
 public class URLs extends Controller {
 

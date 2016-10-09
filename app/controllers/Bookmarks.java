@@ -6,10 +6,10 @@ import com.google.gson.JsonObject;
 
 import models.Bookmark;
 import models.Category;
-import models.Error;
-import models.Result;
 import play.data.validation.Required;
 import play.mvc.*;
+import utils.Error;
+import utils.Result;
 
 public class Bookmarks extends Controller {
 

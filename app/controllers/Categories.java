@@ -3,10 +3,10 @@ package controllers;
 import java.util.List;
 
 import models.Category;
-import models.Error;
-import models.Result;
 import play.data.validation.Required;
 import play.mvc.*;
+import utils.Error;
+import utils.Result;
 
 public class Categories extends Controller {
 
@@ -41,5 +41,15 @@ public class Categories extends Controller {
 		}
 		renderJSON(r);
 	}
-
+	
+	public static void remove(@Required Long categoryId){
+		Result r=null;
+		int num=Category.delete("id=?", categoryId);
+		if(num>0){
+			r=new Result(Error.S_20, Error.S_20_MSG, null);
+		}else{
+			r=new Result(Error.F_43, Error.F_43_MSG, null);
+		}
+		renderJSON(r);
+	}
 }
