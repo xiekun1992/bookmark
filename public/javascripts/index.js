@@ -1,4 +1,4 @@
-angular.module('bookmark',[])
+angular.module('bookmark',['ngResource'])
 .controller('bookmarkController',['$scope','API','$timeout',function($scope,API,$timeout){
 	$scope.wallScroll=false;
 	$scope.scrollText="添加书签";
@@ -31,12 +31,21 @@ angular.module('bookmark',[])
 		angular.element("#newCategory").focus();
 	};
 	$scope.removeCategory=function(cId){
-		// $http
 		$scope.showCategories();
-		angular.forEach($scope.categories,function(o,i){
-			if(o.id==cId){
-				$scope.categories.splice(i,1);
+		API.Category.remove({categoryId:cId})
+		.$promise.then(function(data){
+			if(data.errorCode==20){
+				angular.forEach($scope.categories,function(o,i){
+					if(o.id==cId){
+						$scope.categories.splice(i,1);
+					}
+				});
+			}else{
+				alert(data.errorMsg);
 			}
+		})
+		.catch(function(){
+			alert('fail to delete category');
 		});
 		// $scope.showCategories();
 	};
@@ -45,22 +54,44 @@ angular.module('bookmark',[])
 		$scope.newCategory={name:''};
 	};
 	$scope.addOrEditCategory=function(){
-		// $http
 		if($scope.newCategory.name){
-			if($scope.newCategory.id){//编辑分类
-				angular.forEach($scope.categories,function(o,i){
-					if(o.id===$scope.newCategory.id && o.name!==$scope.newCategory.name){
-						o.name=$scope.newCategory.name;
+			if($scope.newCategory.id>0){//编辑分类
+				API.Category.update({categoryId:$scope.newCategory.id},{name:$scope.newCategory.name})
+				.$promise.then(function(data){
+					if(data.errorCode==20){
+						angular.forEach($scope.categories,function(o,i){
+							if(o.id===$scope.newCategory.id && o.name!==$scope.newCategory.name){
+								o.name=$scope.newCategory.name;
+							}
+						});
+						$scope.newCategory={name:''};
+					}else{
+						alert(data.errorMsg);
 					}
+				})
+				.catch(function(){
+					alert('更新分类失败');
 				});
 			}else{
-				$scope.categories.push($scope.newCategory);
+				API.Category.save({name:$scope.newCategory.name})
+				.$promise.then(function(data){
+					if(data.errorCode==20){
+						$scope.categories.push(data.data);
+						$scope.newCategory={name:''};
+					}else{
+						alert(data.errorMsg);
+					}
+				})
+				.catch(function(){
+					alert('更新分类失败');
+				});
 			}
 			angular.element("#newCategory").focus();
 		}else{
 			$scope.flip=false;
+			$scope.presentCategories=false;
 		}
-		$scope.newCategory={name:''};
+		
 
 	};
 
@@ -74,59 +105,58 @@ angular.module('bookmark',[])
 			this.category="";
 		},
 		submit:function(event){
-			API.bookmark.add(this.url,this.description,this.category)
-			.then(function(res){
-				var data=res.data;
-				if(data.errorCode==20){
-					$scope.urls.unshift(data.data);
-					this.reset();
-					return data.data;
-				}else{
-					alert(data.errorMsg);
-				}
-			}.bind(this))
-			.then(function(data){
-				console.log(data);
-				var bookmarkId=data.id;
-				API.url.get(data.url,bookmarkId)
-				.then(function(res){
-					var data=res.data;
-					if(data.errorCode==20){
-						angular.forEach($scope.urls,function(o,i){
-							if(o.id==bookmarkId){
-								$scope.urls[i].icon=data.data.icon;
-								$scope.urls[i].title=data.data.title;
-							}
-						});
-					}else{
-						alert(data.errorMsg);
-					}
-				});
-			})
-			.catch(function(){
-				alert('fail to add bookmark');
-			});
+			// API.bookmark.add(this.url,this.description,this.category)
+			// .then(function(res){
+			// 	var data=res.data;
+			// 	if(data.errorCode==20){
+			// 		$scope.urls.unshift(data.data);
+			// 		this.reset();
+			// 		return data.data;
+			// 	}else{
+			// 		alert(data.errorMsg);
+			// 	}
+			// }.bind(this))
+			// .then(function(data){
+			// 	console.log(data);
+			// 	var bookmarkId=data.id;
+			// 	API.url.get(data.url,bookmarkId)
+			// 	.then(function(res){
+			// 		var data=res.data;
+			// 		if(data.errorCode==20){
+			// 			angular.forEach($scope.urls,function(o,i){
+			// 				if(o.id==bookmarkId){
+			// 					$scope.urls[i].icon=data.data.icon;
+			// 					$scope.urls[i].title=data.data.title;
+			// 				}
+			// 			});
+			// 		}else{
+			// 			alert(data.errorMsg);
+			// 		}
+			// 	});
+			// })
+			// .catch(function(){
+			// 	alert('fail to add bookmark');
+			// });
 		}
 	};
 	// 获取所有书签
 	$scope.urls=[];
-	API.bookmark.get()
-	.then(function(res){
-		var data=res.data;
-		if(data.errorCode==20){
-			$scope.urls=data.data;
-		}else{
-			alert(data.errorMsg);
-		}
-	})
-	.catch(function(){
-		alert('fail to get bookmark');
-	});
+	// API.bookmark.get()
+	// .then(function(res){
+	// 	var data=res.data;
+	// 	if(data.errorCode==20){
+	// 		$scope.urls=data.data;
+	// 	}else{
+	// 		alert(data.errorMsg);
+	// 	}
+	// })
+	// .catch(function(){
+	// 	alert('fail to get bookmark');
+	// });
 	// 获取分类
 	$scope.categories=[];
-	API.category.get()
-	.then(function(res){
-		var data=res.data;
+	API.Category.get()
+	.$promise.then(function(data){
 		if(data.errorCode==20){
 			$scope.categories=data.data;
 			// $scope.form.description=$scope.categories[0].name;
@@ -139,45 +169,17 @@ angular.module('bookmark',[])
 	});
 	// 增加书签点击数
 	$scope.addCount=function(bookmarkId){
-		API.bookmark.count(bookmarkId);
+		API.Bookmark.count(bookmarkId);
 	};
 }])
-.service('API',['$http',function($http){
+.service('API',['$resource',function($resource){
 	return {
-		bookmark:{
-			add:function(url,description,category){
-				return $http.post('/bookmark',{url:url,description:description,category:category});
-			},
-			get:function(keywords){
-				return $http.get('/bookmarks',{params:{keywords:keywords||''}});
-			},
-			alter:function(){
-
-			},
-			remove:function(){
-
-			},
-			count:function(bookmarkId){
-				// alert(1)
-				return $http.post('/bookmark/'+bookmarkId+'/count');
-			}
-		},
-		category:{
-			get:function(){
-				return $http.get('/category');
-			}
-		},
-		url:{
-			get:function(url,bookmarkId){
-				var apiUrl='/url/'+encodeURIComponent(url)+'/info';
-				return $http.get(apiUrl,{params:{bookmarkId:bookmarkId}});
-			}
-		}
-	};
-}])
-.filter('avail',[function(){
-	return function(input){
-		return input?"y":"n";
+		Bookmark:$resource('/api/bookmark/:bookmarkId:subRoute',
+			{bookmarkId:'@id'},
+			{count:{method:'POST',larams:{subRoute:'/count'}}}),
+		Category:$resource('/category/:categoryId',
+			{categoryId:'@id'}),
+		Url:$resource('/url/:url/info')
 	};
 }])
 .filter('category',[function(){
@@ -190,9 +192,16 @@ angular.module('bookmark',[])
 		return "未知";
 	};
 }])
-.config(function($httpProvider) {
+.config(function($httpProvider,$resourceProvider) {
+  // 添加一个默认的PUT请求到ngResource
+  $resourceProvider.defaults.actions.update={
+  	method:'PUT'
+  };
+
   // Use x-www-form-urlencoded Content-Type
+  // post和put的发送数据方式一样
   $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+  $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 
   /**
    * The workhorse; converts an object to x-www-form-urlencoded serialization.
@@ -231,7 +240,8 @@ angular.module('bookmark',[])
   };
 
   // Override $http service's default transformRequest
-  $httpProvider.defaults.transformRequest = [function(data) {
+  $httpProvider.defaults.transformRequest = [function(data,aa,bb,cc) {
+  	console.log(param(data),aa,bb,cc);
     return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
   }];
 });

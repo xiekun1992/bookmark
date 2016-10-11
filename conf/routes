@@ -6,7 +6,7 @@
 GET     /                                       Application.index
 #Bookmark
 POST	/bookmark							Bookmarks.add
-GET		/bookmarks							Bookmarks.get
+GET		/bookmark							Bookmarks.get
 POST 	/bookmark/{bookmarkId}/count		Bookmarks.count
 
 #URLs
@@ -15,7 +15,8 @@ GET		/url/{url}/info						URLs.access
 #Category
 POST	/category							Categories.add
 GET		/category							Categories.get
-DELETE	/category							Categories.remove
+DELETE	/category/{categoryId}				Categories.remove
+PUT		/category/{categoryId}				Categories.edit
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

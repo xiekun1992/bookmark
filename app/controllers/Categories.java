@@ -52,4 +52,22 @@ public class Categories extends Controller {
 		}
 		renderJSON(r);
 	}
+	public static void edit(@Required Long categoryId,@Required String name){
+		Category c=Category.findById(categoryId);
+		Result r=null;
+		if(c==null){
+			r=new Result(Error.S_30, Error.S_30_MSG, null);
+		}else if(Category.find("name=?", name).first()==null){
+			c.name=name;
+			Boolean res=c.save().isPersistent();
+			if(res){
+				r=new Result(Error.S_20, Error.S_20_MSG, c);
+			}else{
+				r=new Result(Error.F_40, Error.F_40_MSG, null);
+			}
+		}else{
+			r=new Result(Error.F_41, Error.F_41_MSG, null);
+		}
+		renderJSON(r);
+	}
 }

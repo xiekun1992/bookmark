@@ -17,4 +17,6 @@ public class Error {
 	public static String F_42_MSG="保存失败";
 	public static Integer F_43=43;
 	public static String F_43_MSG="删除失败";
+	public static Integer F_44=44;
+	public static String F_44_MSG="添加失败";
 }
