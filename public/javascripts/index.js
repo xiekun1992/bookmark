@@ -47,7 +47,6 @@ angular.module('bookmark',['ngResource'])
 		.catch(function(){
 			alert('fail to delete category');
 		});
-		// $scope.showCategories();
 	};
 	$scope.flipToCategory=function(){
 		$scope.flip=true;
@@ -105,61 +104,57 @@ angular.module('bookmark',['ngResource'])
 			this.category="";
 		},
 		submit:function(event){
-			// API.bookmark.add(this.url,this.description,this.category)
-			// .then(function(res){
-			// 	var data=res.data;
-			// 	if(data.errorCode==20){
-			// 		$scope.urls.unshift(data.data);
-			// 		this.reset();
-			// 		return data.data;
-			// 	}else{
-			// 		alert(data.errorMsg);
-			// 	}
-			// }.bind(this))
-			// .then(function(data){
-			// 	console.log(data);
-			// 	var bookmarkId=data.id;
-			// 	API.url.get(data.url,bookmarkId)
-			// 	.then(function(res){
-			// 		var data=res.data;
-			// 		if(data.errorCode==20){
-			// 			angular.forEach($scope.urls,function(o,i){
-			// 				if(o.id==bookmarkId){
-			// 					$scope.urls[i].icon=data.data.icon;
-			// 					$scope.urls[i].title=data.data.title;
-			// 				}
-			// 			});
-			// 		}else{
-			// 			alert(data.errorMsg);
-			// 		}
-			// 	});
-			// })
-			// .catch(function(){
-			// 	alert('fail to add bookmark');
-			// });
+			API.Bookmark.save({url:this.url,description:this.description,category:this.category})
+			.$promise.then(function(data){
+				if(data.errorCode==20){
+					$scope.urls.unshift(data.data);
+					this.reset();
+					return data.data;
+				}else{
+					alert(data.errorMsg);
+				}
+			}.bind(this))
+			.then(function(data){
+				console.log(data);
+				var bookmarkId=data.id;
+				API.Url.get({url:data.url,bookmarkId:bookmarkId})
+				.$promise.then(function(data){
+					if(data.errorCode==20){
+						angular.forEach($scope.urls,function(o,i){
+							if(o.id==bookmarkId){
+								$scope.urls[i].icon=data.data.icon;
+								$scope.urls[i].title=data.data.title;
+							}
+						});
+					}else{
+						alert(data.errorMsg);
+					}
+				});
+			})
+			.catch(function(){
+				alert('fail to add bookmark');
+			});
 		}
 	};
 	// 获取所有书签
 	$scope.urls=[];
-	// API.bookmark.get()
-	// .then(function(res){
-	// 	var data=res.data;
-	// 	if(data.errorCode==20){
-	// 		$scope.urls=data.data;
-	// 	}else{
-	// 		alert(data.errorMsg);
-	// 	}
-	// })
-	// .catch(function(){
-	// 	alert('fail to get bookmark');
-	// });
+	API.Bookmark.get()
+	.$promise.then(function(data){
+		if(data.errorCode==20){
+			$scope.urls=data.data;
+		}else{
+			alert(data.errorMsg);
+		}
+	})
+	.catch(function(){
+		alert('fail to get bookmark');
+	});
 	// 获取分类
 	$scope.categories=[];
 	API.Category.get()
 	.$promise.then(function(data){
 		if(data.errorCode==20){
 			$scope.categories=data.data;
-			// $scope.form.description=$scope.categories[0].name;
 		}else{
 			alert(data.errorMsg);
 		}
@@ -169,17 +164,17 @@ angular.module('bookmark',['ngResource'])
 	});
 	// 增加书签点击数
 	$scope.addCount=function(bookmarkId){
-		API.Bookmark.count(bookmarkId);
+		API.Bookmark.count({id:bookmarkId});
 	};
 }])
 .service('API',['$resource',function($resource){
 	return {
-		Bookmark:$resource('/api/bookmark/:bookmarkId:subRoute',
+		Bookmark:$resource('/api/bookmark/:bookmarkId/:subRoute',
 			{bookmarkId:'@id'},
-			{count:{method:'POST',larams:{subRoute:'/count'}}}),
-		Category:$resource('/category/:categoryId',
+			{count:{method:'POST',params:{subRoute:'count'}}}),
+		Category:$resource('/api/category/:categoryId',
 			{categoryId:'@id'}),
-		Url:$resource('/url/:url/info')
+		Url:$resource('/api/url/:url/info')
 	};
 }])
 .filter('category',[function(){

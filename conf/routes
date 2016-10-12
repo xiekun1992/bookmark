@@ -5,18 +5,18 @@
 # Home page
 GET     /                                       Application.index
 #Bookmark
-POST	/bookmark							Bookmarks.add
-GET		/bookmark							Bookmarks.get
-POST 	/bookmark/{bookmarkId}/count		Bookmarks.count
+POST	/api/bookmark							Bookmarks.add
+GET		/api/bookmark							Bookmarks.get
+POST 	/api/bookmark/{bookmarkId}/count		Bookmarks.count
 
 #URLs
-GET		/url/{url}/info						URLs.access
+GET		/api/url/{url}/info						URLs.access
 
 #Category
-POST	/category							Categories.add
-GET		/category							Categories.get
-DELETE	/category/{categoryId}				Categories.remove
-PUT		/category/{categoryId}				Categories.edit
+POST	/api/category							Categories.add
+GET		/api/category							Categories.get
+DELETE	/api/category/{categoryId}				Categories.remove
+PUT		/api/category/{categoryId}				Categories.edit
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

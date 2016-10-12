@@ -122,6 +122,7 @@ ul,li{
     position: absolute;
     left: 5px;
     top: 8px;
+    border:0;
 }
 .bookmark span.title{
 	margin-left: 25px;
