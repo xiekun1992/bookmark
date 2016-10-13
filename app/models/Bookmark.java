@@ -54,7 +54,7 @@ public class Bookmark extends Model {
     public Bookmark(String title,String url,Integer owner,String description,Category category){
     	this.category=category;
     	this.description=description;
-    	this.icon="";
+    	this.icon=" ";
     	this.title=title;
     	this.url=url;
     	this.owner=owner;
