@@ -71,7 +71,7 @@
 			<tbody>
 				<tr data-ng-repeat="url in urls track by $index" class="bookmark">
 					<!-- <td></td> -->
-					<td><img data-ng-src="{{url.icon||'#'}}" class="icon"><span class="title" data-ng-bind="url.title"></span></td>
+					<td><img data-ng-src="{{url.icon||' '}}" class="icon"><span class="title" data-ng-bind="url.title"></span></td>
 					<td><a href="{{url.url}}" data-ng-click="addCount(url.id)" target="_blank" data-ng-bind="url.url"></a></td>
 					<td><span data-ng-bind="url.description"></span></td>
 					<td><span data-ng-bind="url.categoryName"></span></td>
