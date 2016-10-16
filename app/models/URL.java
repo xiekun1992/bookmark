@@ -12,6 +12,8 @@ import org.htmlparser.util.NodeList;
 import com.google.gson.JsonObject;
 
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URLConnection;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,6 +47,7 @@ public class URL {
 			c.connect();
 			System.out.println("连接指定url的状态码： "+c.getResponseCode());
 			//获取doc成功，该书签有效
+			//需要处理重定向的问题3xx ==========
 			if(c.getResponseCode()==200){
 				//先判断根路径下的favicon.ico
 				String rootIconUrl=url.getProtocol()+"://"+url.getHost()+"/favicon.ico";
@@ -82,7 +85,17 @@ public class URL {
 							}else{
 								//增加对路径的判断，如：对于xx.com/latest/ 而言 /favicon.ico与favicon.ico的起始位置不相同
 								if(iconHref.startsWith("/")){
-									icon=url.getProtocol()+"://"+url.getHost()+iconHref;
+									Boolean iconExist=false;
+									for(String pathFrag:url.getPath().split("/")){
+										icon=url.getProtocol()+"://"+url.getHost()+"/"+pathFrag+iconHref;
+										if(resourceExist(icon)){
+											iconExist=true;
+											break;
+										}
+									}
+									if(!iconExist){
+										icon="";
+									}
 								}else{
 									icon=bUrl+iconHref;
 								}
@@ -120,5 +133,31 @@ public class URL {
 			bookmark.save();
 		}
     	return u;
+    }
+    
+    public static Boolean resourceExist(String path){
+    	java.net.URL url;
+		try {
+			url = new java.net.URL(path);
+			HttpURLConnection urlc=(HttpURLConnection) url.openConnection();
+			urlc.setRequestProperty("Connection", "Keep-Alive");
+			urlc.setRequestProperty("Charset", "UTF-8");
+			urlc.setRequestProperty("Content-Type", "text/html");
+			urlc.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36");
+			urlc.connect();
+			
+			String statusCode=urlc.getResponseCode()+"";
+			switch(statusCode.charAt(0)){
+				case '2':return true;
+				case '3':return resourceExist(urlc.getHeaderField("Location"));
+				case '4':
+				case '5':
+				default:return false;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+//			e.printStackTrace();
+			return false;
+		}
     }
 }
