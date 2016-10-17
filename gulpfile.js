@@ -1,9 +1,12 @@
 var gulp=require('gulp'),
 	uglify=require('gulp-uglify'),
 	rename=require('gulp-rename'),
-	sourcemaps=require('gulp-sourcemaps');
+	minifyCss=require('gulp-minify-css'),
+	sourcemaps=require('gulp-sourcemaps'),
+	staticHash=require('gulp-static-hash'),
+	clean=require('gulp-clean');
 
-gulp.task('uglify',function(){
+gulp.task('uglify-js',function(){
 	gulp.src('./public/javascripts/src/bookmark/*.js')
 		.pipe(sourcemaps.init())
 		.pipe(uglify())
@@ -15,8 +18,30 @@ gulp.task('uglify',function(){
 		.pipe(gulp.dest('./public/javascripts/build/bookmark/'));
 });
 
-gulp.task('watch',function(){
-	gulp.watch('./public/javascripts/**/*.js',['uglify']);
+gulp.task('minify-css',function(){
+	gulp.src('./public/stylesheets/**/*.css')
+		.pipe(minifyCss())
+		.pipe(gulp.dest('./public/stylesheets/'));
 });
 
-gulp.task('default',['uglify','watch']);
+gulp.task('static-hash',function(){
+	gulp.src('./public/htmls/**/*.html')
+		.pipe(staticHash({
+			asset:'./public',
+			exts:['js','css','png','jpg','bmp','gif','ico'],
+			md5BuildAsset: './public/'
+		}))
+		.pipe(gulp.dest('./app/views/'));
+});
+
+gulp.task('clean',function(){
+	gulp.src('./app/views/**/*.html',{read:false})
+		.pipe(clean());
+});
+
+gulp.task('watch',function(){
+	gulp.watch('./public/javascripts/**/*.js',['uglify-js','minify-css']);
+	gulp.watch('./public/htmls/**/*.html',['clean','static-hash']);
+});
+
+gulp.task('default',['uglify-js','minify-css','clean','static-hash','watch']);

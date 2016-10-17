@@ -5,4 +5,5 @@
 .classpath
 .project
 /node_modules
-
+/public/javascripts/build
+/app/views

@@ -9,9 +9,15 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "event-stream": "^3.3.4",
     "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-minify-css": "^1.2.4",
     "gulp-rename": "^1.2.2",
+    "gulp-rev-append": "^0.1.6",
+    "gulp-rev-append-all": "^0.1.6",
     "gulp-sourcemaps": "^2.1.1",
+    "gulp-static-hash": "^0.1.4",
     "gulp-uglify": "^2.0.0"
   }
 }
