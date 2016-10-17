@@ -28,8 +28,7 @@ gulp.task('static-hash',function(){
 	gulp.src('./public/htmls/**/*.html')
 		.pipe(staticHash({
 			asset:'./public',
-			exts:['js','css','png','jpg','bmp','gif','ico'],
-			md5BuildAsset: './public/'
+			exts:['js','css','png','jpg','bmp','gif','ico']
 		}))
 		.pipe(gulp.dest('./app/views/'));
 });
