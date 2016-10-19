@@ -6,8 +6,14 @@ var gulp=require('gulp'),
 	staticHash=require('gulp-static-hash'),
 	clean=require('gulp-clean');
 
+var src='./public/src',build='./public/build';
+
+var imagesSrc=[src+'/images/**/*.*',src+'/images/*.*'],
+	scriptsSrc=[src+'/javascripts/**/*.js',src+'/javascripts/*.js'],
+	stylesSrc=[src+'/stylesheets/**/*.css',src+'/stylesheets/*.css'];
+
 gulp.task('uglify-js',function(){
-	gulp.src('./public/javascripts/src/bookmark/*.js')
+	gulp.src(scriptsSrc)
 		.pipe(sourcemaps.init())
 		.pipe(uglify())
 		.pipe(rename(function(path){
@@ -15,19 +21,28 @@ gulp.task('uglify-js',function(){
 			path.extname=".js";
 		}))
 		.pipe(sourcemaps.write())
-		.pipe(gulp.dest('./public/javascripts/build/bookmark/'));
+		.pipe(gulp.dest(build+'/javascripts/'));
 });
 
 gulp.task('minify-css',function(){
-	gulp.src('./public/stylesheets/**/*.css')
+	gulp.src(stylesSrc)
 		.pipe(minifyCss())
-		.pipe(gulp.dest('./public/stylesheets/'));
+		.pipe(rename(function(path){
+			path.basename+=".min";
+			path.extname=".css";
+		}))
+		.pipe(gulp.dest(build+'/stylesheets/'));
+});
+
+gulp.task('copy-images',function(){
+	gulp.src(imagesSrc)
+		.pipe(gulp.dest(build+'/images/'));
 });
 
 gulp.task('static-hash',function(){
-	gulp.src('./public/htmls/**/*.html')
+	gulp.src(src+'/htmls/**/*.html')
 		.pipe(staticHash({
-			asset:'./public',
+			asset:src,
 			exts:['js','css','png','jpg','bmp','gif','ico']
 		}))
 		.pipe(gulp.dest('./app/views/'));
@@ -39,8 +54,17 @@ gulp.task('clean',function(){
 });
 
 gulp.task('watch',function(){
-	gulp.watch('./public/javascripts/**/*.js',['uglify-js','minify-css']);
-	gulp.watch('./public/htmls/**/*.html',['clean','static-hash']);
+	gulp.watch(scriptsSrc,['uglify-js']);
+	gulp.watch(stylesSrc,['minify-css']);
+	gulp.watch(imagesSrc,['copy-images']);
+	gulp.watch(src+'/htmls/**/*.html',['clean','static-hash']);
 });
 
-gulp.task('default',['uglify-js','minify-css','clean','static-hash','watch']);
+gulp.task('default',[
+	'uglify-js',
+	'minify-css',
+	'clean',
+	'static-hash',
+	'copy-images',
+	'watch'
+]);

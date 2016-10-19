@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<html lang="zh-cn" data-ng-app="bookmark">
+    <head>
+        <title>#{get 'title' /}</title>
+        <meta charset="utf-8">
+        #{get 'moreStyles' /}
+        <link rel="stylesheet" media="screen" href="../../public/build/stylesheets/main.min.css">
+        <link rel="shortcut icon" type="image/png" href="../../public/build/images/favicon.png">
+    </head>
+    <body class="container" data-ng-controller="bookmarkController">
+        #{doLayout /}
+        
+        <script src="//cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+        <script src="//cdn.bootcss.com/angular.js/1.5.8/angular.min.js"></script>
+        <script src="//cdn.bootcss.com/angular.js/1.5.8/angular-animate.min.js"></script>
+        <script src="//cdn.bootcss.com/angular-resource/1.5.8/angular-resource.min.js"></script>
+
+        <script type="text/javascript" src="../../public/build/javascripts/bookmark/controllers.min.js"></script>
+        <script type="text/javascript" src="../../public/build/javascripts/bookmark/filters.min.js"></script>
+        <script type="text/javascript" src="../../public/build/javascripts/bookmark/services.min.js"></script>
+        <script type="text/javascript" src="../../public/build/javascripts/bookmark/bookmark.min.js"></script>
+        #{get 'moreScripts' /}
+    </body>
+</html>
