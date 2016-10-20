@@ -117,12 +117,12 @@ ul,li{
 	border-radius: 0;
 }
 .bookmark .icon{
-	width:20px;
-	height:20px;
+    width: 16px;
+    height: 16px;
     position: absolute;
     left: 5px;
-    top: 8px;
-    border:0;
+    top: 10px;
+    border: 0;
 }
 .bookmark span.title{
 	margin-left: 25px;

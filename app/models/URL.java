@@ -70,6 +70,7 @@ public class URL {
     }
     /**
      * 获取指定超链接的icon资源
+     * issues：不是所有的响应都会设置content-length，不是所有的图片路径都从根路径开始，不是所有的请求都是一次就返回200，不是所有的路径或标志都是小写，不是所有的url都是合法的
      * @param path 请求的链接
      * @param type 1html，2图片
      * @return 网站图标地址
@@ -88,16 +89,16 @@ public class URL {
 			String statusCode=urlc.getResponseCode()+"";
 			switch(statusCode.charAt(0)){
 			case '2':
-				if(urlc.getContentLengthLong()>0){
+//				if(urlc.getContentLengthLong()>0){
 					System.out.println("获取资源成功");
 					if(type==1){
 						return parseIconPath(url,path);						
 					}else if(type==2){
 						return path;
 					}
-				}
-				System.out.println("获取的资源长度为0");
-				return "";
+//				}
+//				System.out.println("获取的资源长度为0");
+//				return "";
 			case '3':
 				System.out.println("重定向，Location："+urlc.getHeaderField("Location"));
 				return resourceExist(urlc.getHeaderField("Location"),type);
@@ -120,7 +121,7 @@ public class URL {
 		//获取doc成功，该书签有效
 		//需要处理重定向的问题3xx ========== 需要限制重定向的次数
 		//先判断根路径下的favicon.ico
-		String rootIconUrl=url.getProtocol()+"://"+url.getHost()+"/favicon.ico";
+		String rootIconUrl=url.getProtocol()+"://"+normalizeURL(url.getHost()+"/favicon.ico");
 		System.out.println("根路径下的icon："+rootIconUrl);
 		java.net.URL iUrl=new java.net.URL(rootIconUrl);
 		HttpURLConnection ic=(HttpURLConnection)iUrl.openConnection();
@@ -141,9 +142,10 @@ public class URL {
 		for(int i=0;i<inodeList.size();i++){
 			String link=inodeList.elementAt(i).getText();
 			System.out.println(link);
-			if(link.indexOf("rel=\"shortcut icon\"")!=-1 || link.indexOf("rel=\"icon\"")!=-1){
+			String lowserCaseLink=link.toLowerCase();//用于避免rel中大小写影响
+			if(lowserCaseLink.indexOf("rel=\"shortcut icon\"")!=-1 || lowserCaseLink.indexOf("rel=\"icon\"")!=-1){
 				Pattern p=Pattern.compile("href=\"([\\S]+)\"");
-				Matcher m=p.matcher(link);
+				Matcher m=p.matcher(link);//href值中可能有大小写，不能使用lowserCaseLink
 				while(m.find()){
 					String iconHref=m.group(1);
 					System.out.println("href= "+iconHref);
@@ -155,13 +157,18 @@ public class URL {
 						if(iconHref.startsWith("/")){
 //							System.out.println(url.getPath());
 							if(url.getPath().equals("/")){
-								icon=resourceExist(url.getProtocol()+"://"+url.getHost()+iconHref,2);
+								icon=resourceExist(url.getProtocol()+"://"+normalizeURL(url.getHost()+iconHref),2);
 							}else{
 								//遍历可能的起始路径，并重新请求icon链接
+								String tmpIcon;
 								for(String pathFrag:url.getPath().split("/")){
-									icon=url.getProtocol()+"://"+url.getHost()+"/"+pathFrag+iconHref;
-									System.out.println("icon的路径："+icon);
-									icon=resourceExist(icon,2);
+									tmpIcon=url.getProtocol()+"://"+normalizeURL(url.getHost()+"/"+pathFrag+iconHref);
+									System.out.println("icon的路径："+tmpIcon);
+									tmpIcon=resourceExist(tmpIcon,2);
+									if(tmpIcon.length()>0){
+										icon=tmpIcon;
+										return icon;
+									}
 								}
 							}
 						}else{
@@ -173,5 +180,9 @@ public class URL {
 		}
     	
     	return icon;
+    }
+    
+    public static String normalizeURL(String url){
+    	return url.replaceAll("//", "/");
     }
 }
