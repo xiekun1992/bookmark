@@ -65,7 +65,7 @@ angular.module('bookmark.controller',[])
 						});
 						$scope.newCategory={name:''};
 					}else{
-						alert(data.errorMsg);
+						// alert(data.errorMsg);
 					}
 				})
 				.catch(function(){
@@ -111,7 +111,7 @@ angular.module('bookmark.controller',[])
 					this.reset();
 					return data.data;
 				}else{
-					alert(data.errorMsg);
+					// alert(data.errorMsg);
 				}
 			}.bind(this))
 			.then(function(data){
@@ -143,7 +143,7 @@ angular.module('bookmark.controller',[])
 		if(data.errorCode==20){
 			$scope.urls=data.data;
 		}else{
-			alert(data.errorMsg);
+			// alert(data.errorMsg);
 		}
 	})
 	.catch(function(){
@@ -156,7 +156,7 @@ angular.module('bookmark.controller',[])
 		if(data.errorCode==20){
 			$scope.categories=data.data;
 		}else{
-			alert(data.errorMsg);
+			// alert(data.errorMsg);
 		}
 	})
 	.catch(function(){

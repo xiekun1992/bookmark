@@ -1,4 +1,7 @@
+import java.util.concurrent.TimeUnit;
+
 import org.junit.*;
+import org.junit.rules.Timeout;
 
 import play.test.*;
 import play.mvc.*;
@@ -7,7 +10,9 @@ import utils.Result;
 import models.*;
 
 public class ApplicationTest extends FunctionalTest {
-
+	@Rule
+	public Timeout timeout=Timeout.seconds(20);
+	
     @Test
     public void testThatIndexPageWorks() {
         Response response = GET("/");
@@ -15,11 +20,13 @@ public class ApplicationTest extends FunctionalTest {
         assertContentType("text/html", response);
         assertCharset(play.Play.defaultWebEncoding, response);
     }
-    @Test(timeout=5000)
-    public void testURLAccess(){
-    	String url="http://www.npmjs.org";
+    @Test
+    public void testURLAccess() throws InterruptedException{
+    	String url="http://www.ytcydh.com";
     	Response response=GET("/api/url/"+url+"/info");
+//    	TimeUnit.SECONDS.sleep(6);
     	assertIsOk(response);
-    	assertSame(20, (((Result)renderArgs("r")).errorCode));
+    	System.out.println(response.current().contentType);
+//    	assertSame(20, );
     }
 }

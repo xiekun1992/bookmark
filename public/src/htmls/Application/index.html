@@ -1,22 +1,31 @@
 #{extends 'main.html' /}
 #{set title:'bookmark' /}
-
+<header>
+	<ul>
+		<!-- <li><img src="../../../public/build/images/favicon.png" width="40" height="40"></li> -->
+		<li>BOOKMARK</li>
+		<li>首页</li>
+		<li>分析</li>
+		<li>注册</li>
+		<li>登录</li>
+	</ul>
+</header>
 <aside>
-	<img src="../../../public/build/images/psb.jpg" alt="" class="user-img">
+	<!-- <img src="../../../public/build/images/psb.jpg" alt="" class="user-img"> -->
 	<div>
 		<!-- <button ng-click="showForm()" class="btn">登录</button> -->
-		<button ng-click="showForm()" class="btn"><div ng-bind="scrollText"></div></button>
+		<!-- <button ng-click="showForm()" class="btn"><div ng-bind="scrollText"></div></button> -->
 	</div>
 	<div class="wall">
 		<div class="scroll" ng-class="{open:wallScroll,close:!wallScroll}">
 			<nav>
 				<ul>
-					<li><a href="/" class="active">首页</a></li>
+					<!-- <li><a href="/" class="active">首页</a></li> -->
 					<li><a href="/">分类</a></li>
-					<li><a href="/">分析</a></li>
+					<!-- <li><a href="/">分析</a></li> -->
 				</ul>	
 			</nav>
-			<div class="input container">
+			<!-- <div class="input container">
 				<form ng-submit="form.submit()" name="urlForm">
 					<input type="text" placeholder="描述" ng-model="form.description" ng-required>
 					<input type="url" placeholder="网址" ng-model="form.url" ng-required>
@@ -49,7 +58,7 @@
 					</div>
 					<input type="submit" class="btn" value="添加" disabled="true" ng-disabled="!form.url||!form.description||!form.category">
 				</form>
-			</div>		
+			</div>	 -->	
 			
 		</div>
 		<!-- <button ng-click="showForm()" class="btn">注册</button> -->

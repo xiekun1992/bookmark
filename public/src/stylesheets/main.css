@@ -154,7 +154,7 @@ table td a{
 	margin-left: 200px;
 }
 aside{
-	width: 200px;
+	width: 40px;
 	position: fixed;
 	left: 0;
 	top: 0;
@@ -170,6 +170,20 @@ aside:before{
 	top: 0;
 	background: inherit;
 	z-index: -1;
+}
+header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 40px;
+    width: 100%;
+    background: #2882b5;
+    border-bottom: 1px solid #1c73a5;
+    z-index: 999;
+}
+header>ul>li{
+	color: #fff;
+	float: left;
 }
 nav{
 	padding: 20px 0 20px 0;
