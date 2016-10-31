@@ -1,5 +1,14 @@
 angular.module('bookmark.controller',[])
 .controller('bookmarkController',['$scope','API','$timeout',function($scope,API,$timeout){
+	$scope.openModal=function(){
+		angular.element("#bookmarkModal").css('display','block');
+		angular.element("#bookmarkModal>modal-body").addClass('open');
+	};
+	$scope.hideModal=function(){
+		angular.element("#bookmarkModal>modal-body").removeClass('open');
+	};
+
+
 	$scope.wallScroll=false;
 	$scope.scrollText="添加书签";
 	$scope.showForm=function(){
@@ -99,21 +108,21 @@ angular.module('bookmark.controller',[])
 		description:"",
 		category:"",
 		reset:function(){
-			this.url="";
-			this.description="";
-			this.category="";
+			$scope.url="";
+			$scope.description="";
+			$scope.category="";
 		},
 		submit:function(event){
-			API.Bookmark.save({url:this.url,description:this.description,category:this.category})
+			API.Bookmark.save({url:$scope.url,description:$scope.description,category:$scope.category})
 			.$promise.then(function(data){
 				if(data.errorCode==20){
 					$scope.urls.unshift(data.data);
-					this.reset();
+					$scope.reset();
 					return data.data;
 				}else{
 					// alert(data.errorMsg);
 				}
-			}.bind(this))
+			}.bind($scope))
 			.then(function(data){
 				console.log(data);
 				var bookmarkId=data.id;
