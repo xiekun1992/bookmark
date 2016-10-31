@@ -2,6 +2,8 @@ body{
 	padding:0;
 	margin:0;
 	font-size: 14px;
+    background: #f5f8fa;
+    margin-top: 50px;
 }
 body,div,ul,li,a,span,div,p,nav,aside,section,main,button,input,select,table,tr,th,td{
 	font-family: 微软雅黑;
@@ -19,6 +21,15 @@ ul,li{
 	display: table;
 	clear: both;
 	height: 0;
+}
+.pull-left{
+	float: left !important;
+}
+.pull-right{
+	float: right !important;
+}
+.no-margin{
+	margin: 0 !important;
 }
 .container{
 	padding: 10px;
@@ -181,9 +192,30 @@ header{
     border-bottom: 1px solid #1c73a5;
     z-index: 999;
 }
+header>ul{
+    float: left;
+    width: 100%;
+    line-height: 40px;
+    padding: 0 10px;
+}
 header>ul>li{
-	color: #fff;
 	float: left;
+	color: #fff;
+}
+header>ul>li a{
+	color:rgba(255,255,255,0.8);
+	text-decoration: blink;
+	margin: 0 20px;
+}
+header>ul>li a:hover,
+header>ul>li a:focus{
+	color: #fff;
+}
+header>ul .brand{
+	font-family: Arial;
+	font-size: 26px;
+	font-style: italic;
+	text-shadow:0 1px 4px #777;
 }
 nav{
 	padding: 20px 0 20px 0;
@@ -254,12 +286,38 @@ nav a:hover{
     position: relative;
     /*border-bottom: 1px solid #cecece;*/
 }
+.modal{
+	display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0,0,0,0.25);
+    z-index: 999;
+}
+.modal .modal-body{
+    width: 500px;
+    margin: auto;
+    background: #fff;
+    padding: 40px;
+    padding-top: 1px;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 1px 10px #999;
+    position: relative;
+	top: -100%;
+}
+
+
 /*animation*/
 .flip-pos{
 	animation:uptodown .2s forwards;
 }
 .flip-nag{
 	animation:downtoup .2s forwards;
+}
+.modal-body.open{
+	animation:slidedown .2s forwards;
 }
 @keyframes uptodown{
 	from {
@@ -275,5 +333,21 @@ nav a:hover{
 	}
 	to{
 		transform:rotateX(0deg);
+	}
+}
+@keyframes slidedown{
+	from {
+		top: -100%;
+	}
+	to {
+		top: 0;
+	}
+}
+@keyframes slideup{
+	from{
+		top: 0;
+	}
+	to {
+		top: -100%;
 	}
 }
