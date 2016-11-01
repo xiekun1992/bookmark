@@ -2,10 +2,15 @@ angular.module('bookmark.controller',[])
 .controller('bookmarkController',['$scope','API','$timeout',function($scope,API,$timeout){
 	$scope.openModal=function(){
 		angular.element("#bookmarkModal").css('display','block');
-		angular.element("#bookmarkModal>modal-body").addClass('open');
+		angular.element("#bookmarkModal>.modal-body").removeClass('close');
+		angular.element("#bookmarkModal>.modal-body").addClass('open');
 	};
 	$scope.hideModal=function(){
-		angular.element("#bookmarkModal>modal-body").removeClass('open');
+		angular.element("#bookmarkModal>.modal-body").removeClass('open');
+		angular.element("#bookmarkModal>.modal-body").addClass('close');
+		$timeout(function(){
+			angular.element("#bookmarkModal").css('display','none');
+		},200);
 	};
 
 

@@ -82,14 +82,14 @@ ul,li{
 }
 /*.input input[type=submit]*/
 .btn{
-	width: 100%;
-	padding: 7px 5px;
-	font-size: 16px;
-	border:0;
-	border-radius: 2px;
-	color: #fff;
-	outline: none;
-	background-color: #3da1ff;
+    padding: .3em 2.2em;
+    font-size: 16px;
+    border: 0;
+    vertical-align: bottom;
+    border-radius: 2px;
+    color: #fff;
+    background-color: #3da1ff;
+    display: inline-block;
 }
 .btn:hover{
 	/*border-bottom: 2px solid #2488e6;*/
@@ -300,12 +300,12 @@ nav a:hover{
     width: 500px;
     margin: auto;
     background: #fff;
-    padding: 40px;
-    padding-top: 1px;
+    padding: 1px 40px 40px;
     border-radius: 0 0 10px 10px;
     box-shadow: 0 1px 10px #999;
-    position: relative;
-	top: -100%;
+    position: absolute;
+    top: -100%;
+    left: calc(50% - 250px);
 }
 
 
@@ -318,6 +318,9 @@ nav a:hover{
 }
 .modal-body.open{
 	animation:slidedown .2s forwards;
+}
+.modal-body.close{
+	animation:slideup .2s forwards;
 }
 @keyframes uptodown{
 	from {
