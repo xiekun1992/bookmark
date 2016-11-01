@@ -286,7 +286,7 @@ nav a:hover{
     position: relative;
     /*border-bottom: 1px solid #cecece;*/
 }
-.modal{
+.modal-bg{
 	display: none;
     position: fixed;
     top: 0;
@@ -296,16 +296,20 @@ nav a:hover{
     background-color: rgba(0,0,0,0.25);
     z-index: 999;
 }
-.modal .modal-body{
+.modal-bg .modal{
     width: 500px;
     margin: auto;
     background: #fff;
-    padding: 1px 40px 40px;
+    padding: 1px 40px 25px;
     border-radius: 0 0 10px 10px;
     box-shadow: 0 1px 10px #999;
     position: absolute;
     top: -100%;
     left: calc(50% - 250px);
+}
+.modal-footer{
+	margin-top: 10px;
+	text-align: right;
 }
 
 
@@ -316,10 +320,10 @@ nav a:hover{
 .flip-nag{
 	animation:downtoup .2s forwards;
 }
-.modal-body.open{
+.modal.open{
 	animation:slidedown .2s forwards;
 }
-.modal-body.close{
+.modal.close{
 	animation:slideup .2s forwards;
 }
 @keyframes uptodown{

@@ -1,19 +1,5 @@
 angular.module('bookmark.controller',[])
 .controller('bookmarkController',['$scope','API','$timeout',function($scope,API,$timeout){
-	$scope.openModal=function(){
-		angular.element("#bookmarkModal").css('display','block');
-		angular.element("#bookmarkModal>.modal-body").removeClass('close');
-		angular.element("#bookmarkModal>.modal-body").addClass('open');
-	};
-	$scope.hideModal=function(){
-		angular.element("#bookmarkModal>.modal-body").removeClass('open');
-		angular.element("#bookmarkModal>.modal-body").addClass('close');
-		$timeout(function(){
-			angular.element("#bookmarkModal").css('display','none');
-		},200);
-	};
-
-
 	$scope.wallScroll=false;
 	$scope.scrollText="添加书签";
 	$scope.showForm=function(){
@@ -109,25 +95,39 @@ angular.module('bookmark.controller',[])
 	};
 
 	$scope.form={
+		element: '#bookmarkModal',
 		url:"",
 		description:"",
 		category:"",
+		open:function(){
+			angular.element(this.element).css('display','block');
+			angular.element(this.element+">.modal").removeClass('close');
+			angular.element(this.element+">.modal").addClass('open');
+		},
+		close:function(){
+			angular.element(this.element+">.modal").removeClass('open');
+			angular.element(this.element+">.modal").addClass('close');
+			$timeout(function(){
+				angular.element(this.element).css('display','none');
+			}.bind(this),200); 
+		},
 		reset:function(){
-			$scope.url="";
-			$scope.description="";
-			$scope.category="";
+			this.url="";
+			this.description="";
+			this.category="";
 		},
 		submit:function(event){
-			API.Bookmark.save({url:$scope.url,description:$scope.description,category:$scope.category})
+			API.Bookmark.save({url:this.url,description:this.description,category:this.category})
 			.$promise.then(function(data){
 				if(data.errorCode==20){
 					$scope.urls.unshift(data.data);
-					$scope.reset();
+					this.reset();
+					this.close();
 					return data.data;
 				}else{
 					// alert(data.errorMsg);
 				}
-			}.bind($scope))
+			}.bind(this))
 			.then(function(data){
 				console.log(data);
 				var bookmarkId=data.id;
